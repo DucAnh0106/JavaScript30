@@ -38,28 +38,116 @@
     
     // Array.prototype.filter()
     // 1. Filter the list of inventors for those who were born in the 1500's
+    const fifteen = inventors.filter(inventor => inventor.year >= 1500 && inventor.year < 1600);
+
+    console.table(fifteen);
 
     // Array.prototype.map()
     // 2. Give us an array of the inventors first and last names
+    const fullNames = inventors.map( inventor => `${inventor.first} ${inventor.last}`);
+
+    console.table(fullNames)
 
     // Array.prototype.sort()
     // 3. Sort the inventors by birthdate, oldest to youngest
+    /* const ordered = inventors.sort( function(firstPerson, secondPerson) {
+      if(firstPerson.year > secondPerson.year) {
+        return 1;
+      } else {
+        return -1;
+      }
+    }) */
+
+    const ordered = inventors.sort( (firstPerson, secondPerson) => firstPerson.year > secondPerson.year ? 1 : -1);
+
+    console.table(ordered);
 
     // Array.prototype.reduce()
     // 4. How many years did all the inventors live all together?
+    const yearsLived = inventors.reduce( function(sum, inventor) {
+      return sum +  (inventor.passed - inventor.year);
+    }, 0 );
+
+    console.log(yearsLived);
 
     // 5. Sort the inventors by years lived
+    const yearsLivedOrdered = inventors.sort( function(firstPerson, secondPerson) {
+      firstPersonYears = firstPerson.passed - firstPerson.year;
+      secondPersonYears = secondPerson.passed - secondPerson.year;
+
+      return (firstPersonYears > secondPerson) ? 1 : -1;
+    } );
+
+    console.table(yearsLivedOrdered);
 
     // 6. create a list of Boulevards in Paris that contain 'de' anywhere in the name
     // https://en.wikipedia.org/wiki/Category:Boulevards_in_Paris
 
+    //#1 approach: turn nodelist return from querySelectorall to array and apply filter
+    // const category = document.querySelector('.mw-category');
+    //const links = Array.from(category.querySelectorAll('a'));
+
+    //const de = links
+    //              .map(link => link.textContent)
+    //              .filter(streetName => streetName.includes('de'));
+
+    //console.log(de); -->
+
+    //#2 approach: also turn nodelist to array using spread operator
+    //const category = document.querySelector('.mw-category');
+    //const links = [...category.querySelectorAll('a')]; //=> spread operator
+
+    //const de = links
+    //            .map(link => link.textContent)
+    //            .filter(streetName => streetName.includes('de'));
+
+    //console.log(de);
+    
 
     // 7. sort Exercise
     // Sort the people alphabetically by last name
+    const orderedName = people.sort( function(lastOne, nextOne) {
+      const [aLast, aFirst] = lastOne.split(', ');
+      const [bLast, bFirst] = nextOne.split(', ');
+
+      return (aLast > bLast) ? 1 : -1;
+    } );
+
+    console.log( orderedName );
 
     // 8. Reduce Exercise
     // Sum up the instances of each of these
     const data = ['car', 'car', 'truck', 'truck', 'bike', 'walk', 'car', 'van', 'bike', 'walk', 'car', 'van', 'car', 'truck' ];
+
+    //#1 approach: we hard code the value in the list (not recommended)
+    //also not correct cause we never what the have
+    const sumUp = data.reduce( function(object, item) {
+      if (item === 'car') object.car += 1;
+      else if (item === 'walk') object.walk += 1;
+      else object.truck += 1;
+
+      return object; //IMPORTANT, whatever gets returned will be the object for the next iteration
+    }, {
+      car: 0,
+      walk: 0,
+      truck: 0,
+    } );
+
+    //#2 approach: we don't know the values yet => recommended
+    const secondSumUp = data.reduce ( function(object, item) {
+      //check if item have in current object or not
+      //use square bracket in case the item have space in between
+      if (!object[item]) {
+        object[item] = 0;
+      }
+
+      //otherwise, counter += 1
+      object[item] += 1;
+
+      return object;
+    }, {});
+
+    console.log(secondSumUp);
 
   </script>
 </body>
