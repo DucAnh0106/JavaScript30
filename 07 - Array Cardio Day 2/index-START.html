@@ -56,9 +56,20 @@
     // Find the comment with this ID
     const indexOfSpecificID = comments.findIndex( item => item.id === 823423 );
     // delete the comment with the ID of 823423
-    comments.splice( indexOfSpecificID, 1 );
 
-    console.log(comments);
+    //#1 approach: use splice method but not recommended because
+    //this method mutates the array which is not what modern 'JS' aims to do
+    <!-- comments.splice( indexOfSpecificID, 1 ); -->
+
+    //#2 approach
+    const newComments = [
+       ...comments.slice(0, indexOfSpecificID), //w/o spread operator, we will receive 2 nested arrays
+       ...comments.slice(indexOfSpecificID + 1),
+    
+    ];
+
+
+    console.log(newComments);
 
 
   </script>
